@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Contract Academy</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary: #43a047;
+            --light-bg: #e8f5e9;
+            --dark-green: #1b5e20;
+            --accent: #81c784;
+            --card-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #333;
+            overflow-x: hidden;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .navbar-brand, .nav-link { color: white !important; }
+        .nav-link:hover { color: #c8e6c9 !important; }
+        
+        .hero {
+            background: linear-gradient(135deg, #a5d6a7, #e8f5e9 70%);
+            padding: 120px 0 80px;
+            border-radius: 0 0 60px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50px; right: -50px;
+            width: 300px; height: 300px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+        .section-title {
+            color: var(--dark-green);
+            font-weight: 800;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px; left: 0;
+            width: 60px; height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        .analogy-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            height: 100%;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .analogy-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(67, 160, 71, 0.2); }
+        .analogy-card .icon {
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            position: relative;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .copy-btn {
+            position: absolute; top: 12px; right: 12px;
+            background: rgba(255,255,255,0.1); color: #fff;
+            border: none; padding: 6px 12px; border-radius: 8px;
+            font-size: 12px; cursor: pointer; transition: 0.2s;
+        }
+        .copy-btn:hover { background: rgba(255,255,255,0.2); }
+        .case-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #ff9800;
+            box-shadow: var(--card-shadow);
+        }
+        .quiz-option {
+            cursor: pointer;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .quiz-option:hover { background: #e8f5e9; border-color: #c8e6c9; }
+        .quiz-option.correct { background: #d4edda; border-color: #28a745; }
+        .quiz-option.wrong { background: #f8d7da; border-color: #dc3545; }
+        .feedback { display: none; padding: 12px; border-radius: 8px; margin-top: 10px; font-size: 0.95rem; }
+        .btn-academy {
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            color: white; border: none; padding: 10px 24px;
+            border-radius: 50px; font-weight: 600;
+            transition: all 0.3s; box-shadow: 0 4px 15px rgba(67, 160, 71, 0.3);
+        }
+        .btn-academy:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(67, 160, 71, 0.4); color: white; }
+        .score-board {
+            background: white; padding: 20px; border-radius: 16px;
+            text-align: center; box-shadow: var(--card-shadow);
+            margin-top: 30px;
+        }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .function { color: #dcdcaa; }
+        footer {
+            background: #1b5e20; color: white; padding: 40px 0 20px;
+            margin-top: 80px; border-radius: 60px 60px 0 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#"><i class="bi bi-book-half me-2"></i>Smart Contract Academy</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#basics">Fundamentals</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#ethereum">Ethereum Practice </a></li>
+                    <li class="nav-item"><a class="nav-link" href="#cases">Case Study and Security</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#quiz">Quizzes</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero text-center">
+        <div class="container position-relative">
+            <h1 class="display-4 fw-bold text-dark-green mb-3" style="color: var(--dark-green);">From Real Life to Blockchain</h1>
+            <code><i class="bi bi-patch-question"></i> <a href="https://cryptoacademy-max.github.io/crypto-academy/lesson/blockchain/index.html">What is blockchain?</a></code>
+            <p class="lead text-muted mb-4">An interactive learning platform on Smart Contracts – From beginners to hands-on developers</p>
+            <a href="#basics" class="btn btn-academy btn-lg"><i class="bi bi-play-circle me-2"></i>Start learning now</a>
+            <img src="images/grok-image-to-olympia.png" style="width:50%;height:auto">  
+        </div>
+    </section>
+
+    <!-- Section A: Basics & Analogies -->
+    <section id="basics" class="py-5">
+        <div class="container">
+            <h2 class="section-title">🌱<i class="bi bi-flower2"></i> Part 1: Understanding Smart Contracts Through Real-Life Examples</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="analogy-card">
+                        <div class="icon"><i class="bi bi-cup-straw"></i></div>
+                        <h4>Máy bán nước tự động <code>Vending machine</code></h4>
+                        <p class="text-muted">Bạn bỏ 10k → chọn trà sữa → máy nhả đồ. Không cần nhân viên kiểm tra.</p>
+                        
+                        <div class="video-container">
+                            <video controls >
+                                <source src="videos/grok-video-smartcontract_video1.mp4" type="video/mp4">
+                                Trình duyệt của bạn không hỗ trợ video HTML5.
+                            </video>
+                        </div>
+                        <div class="code-block p-3 mb-0" style="font-size: 0.85rem;">
+                            <p class="comment">// Logic đời thường</p>
+                            <code class="keyword">if</code> (<var>coin</var> == 10k && <var>choice</var> == <span class="string">"trà sữa"</span>) {
+                                <code class="function">dispenseDrink</code>();
+                            }
+                        </div>
+                        <p class="mt-2 small text-success">
+                            <i class="bi bi-arrow-right-circle me-1"></i>Chính xác là Smart Contract: <strong>if-then</strong> tự động, không trung gian.
+                        </p>
+                        <code>It's actually a Smart Contract: an automatic <strong>if-then</strong> contract, with no intermediaries.</code>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="analogy-card">
+                        <div class="icon"><i class="bi bi-shield-lock"></i></div>
+                        <h4>Người giữ tiền ủy thác <code>Escrow</code></h4>
+                        
+                        <div class="video-container">
+                            <video controls >
+                                <source src="videos/grok-video-smartcontract_video2.mp4" type="video/mp4">
+                                Trình duyệt của bạn không hỗ trợ video HTML5.
+                            </video>
+                        </div>
+                        <div class="code-block p-3 mb-0" style="font-size: 0.85rem;">
+                            <code class="keyword">if</code> (<var>documentSigned</var>) {
+                                <code class="function">releaseFunds</code>(<var>seller</var>);
+                            } <code class="keyword">else</code> {
+                                <code class="function">refund</code>(<var>buyer</var>);
+                            }
+                        </div>
+                        <p class="mt-2 small text-success">
+                            <i class="bi bi-arrow-right-circle me-1"></i>Smart Contract thay thế bên thứ 3: minh bạch, bất biến, chạy đúng điều kiện.
+                        </p>
+                        <div class="video-container">
+                            <video controls >
+                                <source src="videos/grok-video-smartcontract_video4.mp4" type="video/mp4">
+                                Trình duyệt của bạn không hỗ trợ video HTML5.
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="analogy-card">
+                        <div class="icon"><i class="bi bi-globe2"></i></div>
+                        <h4>Blockchain là gì?</h4>
+                        <div class="video-container">
+                            <video controls >
+                                <source src="videos/grok-video-smartcontract_video3.mp4" type="video/mp4">
+                                Trình duyệt của bạn không hỗ trợ video HTML5.
+                            </video>
+                        </div>
+                        <ul class="list-unstyled mt-3 small">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Decentralized:</strong> Không server trung tâm</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Immutable:</strong> Code đã deploy không sửa được <code>The deployed code cannot be modified</code></li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Gas Fee:</strong> Trả phí để máy tính mạng chạy code</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section B: Hands-on Ethereum -->
+    <section id="ethereum" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title">⛓️<i class="bi bi-link"></i> Part 2: Practicing Ethereum Smart Contracts</h2>
+            <h3><code>💎DEFI</code></h3>
+            <img src="images/ref1.png" style="max-width:100%; height:auto;">
+            <!--
+                max-width:100% giúp ảnh không vượt quá chiều rộng container.
+                height:auto
+            -->
+            <br/>
+            <br/>
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <h3><code>💎SIMPLESTORAGE</code></h3>
+                    <p class="text-muted">Store and Read data</p>
+                    <p class="text-muted">The most basic contract on Ethereum. Allows writing an integer to the blockchain and reading it back at any time.</p>
+                    <code>SimpleStorage is the most basic Solidity contract and is often the first example to start learning Ethereum.</code>
+                    <div class="d-flex gap-3 mb-4">
+                        <div class="text-center">
+                            <div class="bg-light p-3 rounded-circle mb-2"><i class="bi bi-hdd-network fs-4 text-success"></i></div>
+                            <small>State Variable</small>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-light p-3 rounded-circle mb-2"><i class="bi bi-code-slash fs-4 text-success"></i></div>
+                            <small>Function</small>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-light p-3 rounded-circle mb-2"><i class="bi bi-person-check fs-4 text-success"></i></div>
+                            <small>Access Control</small>
+                        </div>
+                    </div>
+                    <div class="alert alert-success border-0 shadow-sm">
+                        <i class="bi bi-lightbulb me-2"></i><strong>Tip (mẹo):</strong> `public` variable automatically creates a getter. `view` consumes no gas when called off-chain.
+                        <div>
+                            <code>public is visibility modifier that allows access from anywhere</code>
+                            <p><code>In Solidity, a view is not a variable, but a modifier for a function. It tells the compiler and EVM that the function only reads data from the blockchain and does not change the contract's state.</code></p>
+                        </div> 
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code><span class="comment">// SPDX-License-Identifier: MIT</span>
+<span class="keyword">pragma solidity</span> ^0.8.0;
+
+<span class="keyword">contract</span> <span class="function">SimpleStorage</span> {
+    <span class="comment">// Biến lưu trữ trên blockchain</span>
+    <span class="keyword">uint256</span> <span class="keyword">public</span> storedData;
+
+    <span class="comment">// Hàm ghi dữ liệu (tốn gas)</span>
+    <span class="keyword">function</span> <span class="function">set</span>(<span class="keyword">uint256</span> _value) <span class="keyword">public</span> {
+        storedData = _value;
+    }
+
+    <span class="comment">// Hàm đọc dữ liệu (miễn phí khi gọi off-chain)</span>
+    <span class="keyword">function</span> <span class="function">get</span>() <span class="keyword">public view returns</span> (<span class="keyword">uint256</span>) {
+        <span class="keyword">return</span> storedData;
+    }
+}</code></pre>
+                    </div>
+                    <div class="mt-3 text-end">
+                        <button class="btn btn-academy btn-sm" onclick="simulateDeploy()"><i class="bi bi-rocket-takeoff me-2"></i>Simulated Deployment</button>
+                    </div>
+                    <div id="deployMsg" class="mt-2 text-success small" style="display:none;"><i class="bi bi-check-circle me-1"></i> The contract has been deployed in a simulated format at: <code>0x7a3...f92</code></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section C: Real Cases & Security -->
+    <section id="cases" class="py-5">
+        <div class="container">
+            <h2 class="section-title">🚨 Part 3: Real-world Case Studies and Security Vulnerabilities</h2>
+            <p class="text-muted mb-4">Smart contract chạy đúng code, nhưng nếu code có lỗi → tiền bay. Dưới đây là các bài học xương máu.</p>
+            <pre><code>Smart contracts run with the correct code, but if the code is flawed, your money is gone. Here are some painful lessons learned</code></pre>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="case-card">
+                        <h5 class="fw-bold text-danger"><i class="bi bi-bug me-2 "></i>The DAO (2016) – Reentrancy Attack</h5>
+                        <dl>
+                            <dt>Reentrancy bug</dt>
+                            <dd>Logic flaw trong smart contract</dd>
+                            <dd>A vulnerability where an attacker recursively calls a function before the contract updates its internal state.</dd>
+                        </dl>
+                        <p class="small text-muted">Hacker khai thác lỗ hổng gọi đệ quy khi rút tiền, rút lặp lại trước khi số dư cập nhật.</p>
+                        <p>The loss amounted to <strong>3.6</strong> million ETH (approximately $50 million at that time).</p>
+                        <span class="badge bg-warning text-dark">Reentrancy</span>
+                        <span class="badge bg-secondary">not Access Control</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="case-card">
+                        <h5 class="fw-bold text-danger"><i class="bi bi-bug me-2 "></i>Parity Wallet (July 2017) – Access Control Flaw</h5> <!--main-->
+                        <code>Parity wallet is wallet software/wallet system, powered by Parity Technologies</code>
+                        <p class="small text-muted">The <code>initWallet</code> function in the Parity multi-signature wallet contract was not properly restricted, allowing an attacker to reinitialize the contract, assign themselves as the owner, and drain approximately <strong>$30M</strong> worth of ETH.</p>
+                        <span class="badge bg-warning text-muted">Initialization</span> <!--support-->
+                        <span class="badge bg-secondary">Ownership</span> <!--impact-->
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="case-card">
+                        <h5 class="fw-bold text-danger">
+                            <i class="bi bi-bug me-2"></i>
+                            Parity Wallet (Nov 2017) – Initialization / Library Flaw
+                        </h5> <!--main-->
+
+                        <p class="small text-muted">
+                            A critical flaw in the shared library contract allowed a user to reinitialize it via the <code>initWallet</code> function, gain ownership, and trigger <code>selfdestruct</code>. 
+                            This permanently disabled the library, causing over <strong>$300M</strong> worth of ETH in dependent multi-signature wallets to be locked forever.
+                        </p>
+
+                        <span class="badge bg-warning text-muted">Initialization</span> <!--support-->
+                        <span class="badge bg-info text-dark">Library</span> <!--context-->
+                        <span class="badge bg-secondary">Denial of Service</span> <!--impact-->
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="case-card">
+                        <h5 class="fw-bold text-danger">
+                            <i class="bi bi-bug me-2"></i>
+                            bZx (Feb 2020) – Oracle Manipulation Attack
+                            
+                        </h5> <!--main-->
+                        <code>Smart Contract bug on Ethereum</code>
+                        <p class="small text-muted">
+                            The bZx lending protocol suffered a critical exploit when attackers manipulated its price oracle 
+                            by using flash loans to distort the reported value of assets. This allowed them to borrow 
+                            against artificially inflated collateral and drain funds. The incident led to losses of 
+                            approximately <strong>$630K</strong> in the first attack and further exploits soon after, 
+                            highlighting the dangers of relying on single-source or manipulable oracles in DeFi.
+                        </p>
+
+                        <span class="badge bg-warning text-muted">Oracle</span> <!--support-->
+                        <span class="badge bg-info text-dark">Flash Loan</span> <!--context-->
+                        <span class="badge bg-secondary">Financial Exploit</span> <!--impact-->
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="case-card">
+                        <h5 class="fw-bold text-danger"><i class="bi bi-bug me-2 "></i>Integer Overflow/Underflow (Pre-0.8.0)</h5>
+                        <p><code>One of the classic vulnerabilities in Solidity prior to version 0.8.0</code></p>
+                        <p class="small text-muted">`uint8` max 255. Nếu cộng thêm 1 → về 0. Hacker exploit batch transfer, mint token vô hạn. Solidity 0.8+ đã fix mặc định.</p>
+                        <span class="badge bg-warning text-dark">Math Error</span>
+                        <span class="badge bg-secondary">Compiler Version</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 p-4 bg-white rounded-4 shadow-sm border-start border-4 border-success">
+                <h5 class="fw-bold text-success">
+                    <i class="bi bi-shield-check me-2 "></i>
+                    3 Essential Principles for Writing Smart Contracts
+                </h5>
+                <ol class="mb-0 small">
+                    <li><strong class="text-warning bg-success">Checks–Effects–Interactions:</strong> Validate conditions → Update state → Transfer funds or call external contracts.</li>
+                    <li><strong class="text-warning bg-success">Always use Solidity ≥0.8.0:</strong> Built‑in protection against overflow/underflow, improved gas efficiency, and stronger safety.</li>
+                    <li><strong class="text-warning bg-success">Audit + Testnet before Mainnet:</strong> Deploy on Sepolia/Goerli, run tools like Slither/Mythril, and engage professional audit firms.</li>
+                </ol>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section D: Interactive Quiz -->
+    <section id="quiz" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title"><i class="bi bi-lightning"></i> Part 4: Adaptability Skills Test</h2>
+            <p class="mb-4 text-info">Choose the correct answer. The system will score your answer and provide an explanation immediately.</p> <!-- HTML bạn đưa, text-muted là một class của Bootstrap. Nó dùng để làm cho chữ hiển thị với màu nhạt hơn (muted) so với văn bản bình thường, thường là màu xám nhẹ, giúp nhấn mạnh rằng đoạn chữ này là phụ, không phải nội dung chính, Thường dùng cho chú thích, mô tả, hoặc thông tin bổ sung.-->
+            <!--
+            thì có hai class cùng lúc: text-muted và text-danger.
+
+            📌 Nguyên nhân chữ không đỏ
+                text-muted đặt màu chữ thành xám nhạt.
+
+                text-danger đặt màu chữ thành đỏ.
+
+                Khi cả hai class cùng tồn tại, CSS nào được áp dụng sau cùng sẽ thắng.
+
+                Trong Bootstrap, text-muted thường có độ ưu tiên cao hơn vì nó dùng màu với !important trong một số phiên bản, hoặc do thứ tự CSS load. Kết quả: chữ vẫn hiện màu xám nhạt thay vì đỏ.
+            -->
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div id="quizContainer"></div>
+                    <div class="score-board" id="scoreBoard" style="display:none;">
+                        <h4 class="fw-bold">🎉 Kết quả của bạn</h4>
+                        <p class="display-6 fw-bold text-success" id="finalScore">0/3</p>
+                        <p class="text-muted" id="scoreFeedback"></p>
+                        <button class="btn btn-academy mt-2" onclick="resetQuiz()"><i class="bi bi-arrow-clockwise me-2"></i>Làm lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <h5 class="fw-bold mb-3"><i class="bi bi-book-half me-2"></i>Smart Contract Academy</h5>
+            <p class="small opacity-75 mb-3">Học an toàn – Code chắc chắn – Deploy tự tin</p>
+            <pre><code>Learn safely – Code confidently – Deploy with confidence</code></pre>
+            <img src="images/graduated.png" style="width:50%;height:auto">
+            <div class="d-flex justify-content-center gap-3 mb-4">
+                <a href="#" class="text-white opacity-75"><i class="bi bi-github fs-5"></i></a>
+                <a href="#" class="text-white opacity-75"><i class="bi bi-twitter-x fs-5"></i></a>
+                <a href="#" class="text-white opacity-75"><i class="bi bi-discord fs-5"></i></a>
+            </div>
+            <hr class="opacity-25">
+            <p class="small opacity-50 mb-0">© 2026 Smart Contract Academy. Educational purpose only. Not financial advice.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Quiz Data
+        const questions = [
+            {
+                q: "1. Trong ví dụ máy bán nước, smart contract thay thế vai trò của ai?",
+                options: ["Người bán hàng", "Ngân hàng trung ương", "Máy chủ đám mây", "Trình duyệt web"],
+                correct: 0,
+                explain: "Smart contract tự động hóa quy trình if-then, loại bỏ sự cần thiết của người trung gian kiểm tra & giao hàng.",
+                videopath: "videos/grok-video-smartcontract_video8.mp4"
+            },
+            {
+                q: "2. Lỗi `reentrancy` trong The DAO xảy ra do thứ tự thực thi nào sai?",
+                options: ["Gửi tiền → Cập nhật số dư → Kiểm tra điều kiện", "Kiểm tra → Gửi tiền → Cập nhật số dư", "Cập nhật số dư → Gửi tiền → Kiểm tra", "Gửi tiền → Kiểm tra → Cập nhật số dư"],
+                correct: 1,
+                explain: "Đúng: Checks-Effects-Interactions. The DAO gửi tiền trước khi trừ số dư, hacker gọi lại hàm withdraw lặp lại trước khi state cập nhật.",
+                videopath: "videos/grok-video-smartcontract_video7.mp4"
+            },
+            {
+                q: "3. Tại sao Solidity 0.8.0+ được khuyến nghị bắt buộc?",
+                options: ["Cú pháp đẹp hơn", "Tự động chặn integer overflow/underflow", "Chạy nhanh hơn 10x (10x faster execution)", "Hỗ trợ NFT mặc định (built-in NFT support)"],
+                correct: 1,
+                explain: "Trước 0.8.0, `uint` overflow về 0 gây exploit nghiêm trọng. 0.8.0+ revert transaction khi overflow, an toàn hơn hẳn.",
+                videopath: "videos/grok-video-smartcontract_video6.mp4"
+            }
+        ];
+
+        let score = 0;
+        let answered = 0;
+
+        function initQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+            /*
+                📌 Vòng lặp render HTML
+                Đây là nơi tạo các phần tử câu hỏi và video
+            */
+            questions.forEach((item, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'mb-4 p-3 bg-light rounded-3';
+                qDiv.innerHTML = `
+                    <p class="fw-bold mb-2">${item.q}</p>
+                    <div class="row">
+                        <!-- Cột 1: Options + Feedback -->
+                        <div class="col-12 col-md-6 mb-3">
+                            <div id="options-${idx}">
+                            ${item.options.map((opt, i) => `
+                                <div class="quiz-option" onclick="checkAnswer(${idx}, ${i})">
+                                ${String.fromCharCode(65+i)}. ${opt}
+                                </div>
+                            `).join('')}
+                            </div>
+                            <!-- Feedback ngay dưới options -->
+                            <div id="feedback-${idx}" class="feedback mt-2"></div>
+                        </div>
+
+                        <!-- Cột 2: Video -->
+                        <div class="col-12 col-md-6">
+                            <div class="video-container" style="padding-top:75% !important;">
+                                <video controls style="width:100%; height:100% !important;">
+                                    <source src="${item.videopath}" type="video/mp4">
+                                    Trình duyệt của bạn không hỗ trợ video HTML5.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+            /*
+            Với div.feedback, vị trí hợp lý nhất là ngay bên dưới phần lựa chọn (options) trong cùng cột, để người dùng chọn xong thì thấy phản hồi ngay tại chỗ. Nếu bạn để feedback ở cột video thì sẽ khó theo dõi vì mắt phải di chuyển sang bên kia.
+            */
+        }
+
+        function checkAnswer(qIdx, optIdx) {
+            const q = questions[qIdx];
+            const optionsDiv = document.getElementById(`options-${qIdx}`);
+            const feedbackDiv = document.getElementById(`feedback-${qIdx}`);
+            const allOpts = optionsDiv.querySelectorAll('.quiz-option');
+            
+            if (allOpts[0].classList.contains('correct') || allOpts[0].classList.contains('wrong')) return; // already answered
+
+            allOpts.forEach((el, i) => {
+                el.style.pointerEvents = 'none';
+                if (i === q.correct) el.classList.add('correct');
+                else if (i === optIdx && i !== q.correct) el.classList.add('wrong');
+            });
+
+            feedbackDiv.style.display = 'block';
+            feedbackDiv.className = `feedback p-3 rounded-3 mt-2 ${optIdx === q.correct ? 'bg-success bg-opacity-10 text-success' : 'bg-danger bg-opacity-10 text-danger'}`;
+            feedbackDiv.innerHTML = `<i class="bi ${optIdx === q.correct ? 'bi-check-circle' : 'bi-x-circle'} me-2"></i><strong>${optIdx === q.correct ? 'Chính xác!' : 'Sai rồi!'}</strong> ${q.explain}`;
+
+            if (optIdx === q.correct) score++;
+            answered++;
+
+            if (answered === questions.length) {
+                document.getElementById('scoreBoard').style.display = 'block';
+                document.getElementById('finalScore').textContent = `${score}/${questions.length}`;
+                const fb = document.getElementById('scoreFeedback');
+                if (score === 3) fb.textContent = "🌟 Xuất sắc! Bạn đã nắm vững nguyên tắc bảo mật & cơ chế hoạt động.";
+                else if (score === 2) fb.textContent = "👍 Khá tốt! Ôn lại phần reentrancy & version compiler là full điểm.";
+                else fb.textContent = "📖 Cần xem lại phần Case Study & nguyên tắc Checks-Effects-Interactions.";
+                document.getElementById('scoreBoard').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function resetQuiz() {
+            score = 0; answered = 0;
+            document.getElementById('scoreBoard').style.display = 'none';
+            initQuiz();
+        }
+
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerHTML = '<i class="bi bi-check2"></i> Copied!';
+                setTimeout(() => btn.innerHTML = '<i class="bi bi-clipboard"></i> Copy', 2000);
+            });
+        }
+
+        function simulateDeploy() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang compile...';
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-rocket-takeoff me-2"></i>Giả lập Deploy';
+                document.getElementById('deployMsg').style.display = 'block';
+            }, 1500);
+        }
+
+        // Smooth scroll & navbar active state
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            initQuiz();
+        });
+    </script>
+</body>
+</html>
