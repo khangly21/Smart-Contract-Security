@@ -1,0 +1,27 @@
+/* Container cho video */
+.video-container {
+  width: 100%;          /* chiếm toàn bộ chiều rộng parent */
+  max-width: 640px;     /* giới hạn tối đa nếu cần */
+  margin: 0 auto;       /* căn giữa */
+}
+
+/* Video responsive */
+.video-container video {
+  max-width: 100%;       /* không lớn hơn khung chứa */
+  width: 100%;          /* co giãn theo parent , chiếm chiều rộng bố cục (hoặc đặt px cố định)*/
+  height: auto;         /* giữ tỷ lệ khung hình */
+  display: block;
+}
+
+/* Nếu muốn giữ tỷ lệ 16:9 */
+.video-container {
+  position: relative; /*Khi bạn đặt position: relative cho container và position: absolute cho video bên trong, video sẽ luôn co giãn theo tỷ lệ 16:9*/
+  padding-top: 56.25%; /* 9/16 = 0.5625 = 56.25% */ /* 16:9  nói “tỷ lệ 16:9” thì ý là chiều ngang (width) : chiều cao (height). */ /*Khi bạn đặt position: relative cho container và position: absolute cho video bên trong, video sẽ luôn co giãn theo tỷ lệ 16:9.*/
+}
+
+.video-container video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; /* bắt buộc responsive */
+  height: 100%;
+}
