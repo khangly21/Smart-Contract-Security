@@ -137,6 +137,123 @@
             background: #1b5e20; color: white; padding: 40px 0 20px;
             margin-top: 80px; border-radius: 60px 60px 0 0;
         }
+
+        /*BTC*/
+        .ap-card-label {
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-tertiary);
+            font-family: 'Source Serif 4', serif;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ap-card-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /*Với mobile-first, bạn luôn thiết kế cho màn hình nhỏ trước, sau đó mở rộng cho màn hình lớn.*/
+        @media (max-width: 600px) {
+            .ap-card-outer {
+                font-size: 18px;
+                padding: 8px;
+            }
+        }
+
+        .ap-card-outer {
+            /*width:100%; ngay cả trong mọi screen size*/
+            max-width: 100%;
+            height:auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1vw;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .ap-card-outer:hover { transform: translateY(-2px); }
+
+        .ap-card-outer:hover .ap-container {
+            border-color: var(--color-border-secondary);
+        }
+
+        .t1-header {
+            background: #042C53;
+            padding: 16px 18px 12px;
+            border-bottom: 3px solid #EF9F27;
+        }
+
+        .t1-journal-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #E6F1FB;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .t1-vol {
+            font-size: 10px;
+            color: #B5D4F4;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.04em;
+        }
+        .t1-body {
+            padding: 14px 18px;
+            min-height: 90px;
+        }
+        .t1-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--color-text-primary);
+            margin-bottom: 6px;
+        }
+        .t1-authors {
+            font-size: 11px;
+            color: #185FA5;
+            margin-bottom: 6px;
+            font-style: italic;
+        }
+        .t1-abstract {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+        .t1-footer {
+            border-top: 0.5px solid var(--color-border-tertiary);
+            /* padding: 8px 18px; */
+            display: flex;
+            align-items: center;
+            gap:1vw;
+            /* justify-content: left; */
+            background: var(--color-background-secondary);
+        }
+        .t1-doi {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--color-text-tertiary);
+            letter-spacing: 0.03em;
+        }
+        .t1-tags {
+            display: flex;
+            gap: 4px;
+        }
+        .t1-tag {
+            font-size: 9px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: #E6F1FB;
+            color: #0C447C;
+            font-family: 'Source Serif 4', serif;
+        }
     </style>
 </head>
 <body>
@@ -151,6 +268,7 @@
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#basics">Fundamentals</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#bitcoin">Bitcoin smart contract</a></li>
                     <li class="nav-item"><a class="nav-link" href="#ethereum">Ethereum Practice </a></li>
                     <li class="nav-item"><a class="nav-link" href="#cases">Case Study and Security</a></li>
                     <li class="nav-item"><a class="nav-link" href="#quiz">Quizzes</a></li>
@@ -245,6 +363,39 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="bitcoin" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title">⛓️<i class="bi bi-link"></i> Part 2: the first smart contract</h2>
+            <h3><code>BITCOIN WHITE PAPER</code></h3>
+            <img src="images/btc_whitepaper.png" style="max-width:100%; height:auto;">
+            <div class="ap-card-outer" data-cat="publication" onclick="sendPrompt('Tell me more about the Classic Journal template and how to customize it')">
+                <div class="ap-card-label"><span class="ap-card-dot" style="background:#185FA5"></span> Publication</div>
+                    <div class="ap-container">
+                        <div class="t1-header">
+                            <div class="t1-journal-name">The Bitcoin Whitepaper</div>
+                            <div class="t1-vol">Original Technical paper • Published October 31, 2008  </div>
+                            <div  class="t1-vol">Available at:
+                                <a style="color:white" href="https://bitcoin.org/bitcoin.pdf">https://bitcoin.org/bitcoin.pdf</a> <!--Trong CSS, thuộc tính để đổi màu chữ là color, không phải text.-->
+                            </div>
+                        </div>
+                        <div class="t1-body">
+                            <div class="t1-title">Bitcoin: A Peer-to-Peer Electronic Cash System</div>
+                            <div class="t1-authors">Satoshi Nakamoto</div>
+                            <div class="t1-abstract">A purely peer-to-peer version of electronic cash would allow onlinepayments to be sent directly from one party to another. Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending.</div>
+                        </div>
+                        <div class="t1-footer" style="background-color: orangered; color: white">
+                            <div class="t1-doi">Available at: https://bitcoin.org/bitcoin.pdf</div>
+                            <div class="t1-tags">
+                                <span class="t1-tag">Open Access</span>
+                                <span class="t1-tag">Not peer-reviewed</span>
+                        </div>
+                        </div>
+                    </div>
+                
             </div>
         </div>
     </section>
