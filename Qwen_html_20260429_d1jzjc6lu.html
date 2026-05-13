@@ -386,6 +386,22 @@
                             <div class="t1-title">Bitcoin: A Peer-to-Peer Electronic Cash System</div>
                             <div class="t1-authors">Satoshi Nakamoto</div>
                             <div class="t1-abstract">A purely peer-to-peer version of electronic cash would allow onlinepayments to be sent directly from one party to another. Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending.</div>
+
+                            <code>
+                            Bitcoin is proposed as a peer-to-peer electronic cash system that allows online payments to be sent directly from one party to another without going through a financial institution. Transactions are timestamped by hashing them into a continuous chain of proof-of-work, forming a record that cannot be altered.
+
+                            Traditional commerce relies almost entirely on financial institutions as trusted third parties to process payments. While this works for most transactions, it suffers from the weaknesses of the trust-based model. Bitcoin solves the double-spending problem by using a peer-to-peer distributed timestamp server. Transactions that are computationally impractical to reverse protect both buyers and sellers.
+
+                            An electronic coin is a chain of digital signatures. Each owner transfers the coin by signing a hash of the previous transaction and the public key of the next owner. To prevent double-spending, all transactions must be publicly announced, and nodes collectively agree on the order by working on the longest proof-of-work chain.
+
+                            Proof-of-work is implemented by incrementing a nonce until a hash is found with the required number of leading zeros. Once a block is created, it cannot be changed without redoing the proof-of-work for that block and all subsequent blocks. Nodes always consider the longest chain to be the valid one. If two blocks are broadcast simultaneously, the tie is broken when the next proof-of-work is found.
+
+                            The first transaction in a block creates new coins, providing an incentive for nodes to support the network. This is analogous to gold miners expending resources to mine gold. The incentive encourages honesty, since an attacker with more CPU power than the honest network must choose between defrauding others or generating new coins.
+
+                            The probability of a slower attacker catching up with the honest chain decreases exponentially as more blocks are added. The race between the honest chain and the attacker chain is modeled as a Binomial Random Walk, showing that the attacker’s chances of success become vanishingly small unless he gets lucky early on.
+
+                            Bitcoin also addresses privacy: public keys keep transactions anonymous, but if a key is revealed, linked transactions may expose the owner. To prevent this, a new key pair should be used for each transaction.
+                            </code>
                         </div>
                         <div class="t1-footer" style="background-color: orangered; color: white">
                             <div class="t1-doi">Available at: https://bitcoin.org/bitcoin.pdf</div>
